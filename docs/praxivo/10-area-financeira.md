@@ -51,6 +51,9 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 | Métricas | BarChart3 | Métricas de economia e impacto |
 | Assinatura | CreditCard | Gestão do plano e cobrança |
 | Faturas | FileText | Histórico de pagamentos |
+| Métodos Pgto | Wallet | Métodos de pagamento salvos |
+
+> ⚠️ **Nota:** A aba "Métodos Pgto" redireciona para o Stripe Customer Portal para gerenciar cartões. Não há armazenamento de dados de cartão no Praxivo.
 
 ---
 
@@ -107,7 +110,7 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 │  R$ 79,90/mês                                  │
 │  Limite: 250 medicamentos                     │
 │                                                 │
-│  Próxima cobrança: 15/08/2024                  │
+│  Próxima cobrança: 15/08/2026                  │
 │                                                 │
 │  [Mudar de Plano]  [Cancelar Assinatura]        │
 └─────────────────────────────────────────────────┘
@@ -115,11 +118,11 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 
 ### Planos Disponíveis
 
-| Plano | Preço | Medicamentos | Recursos |
-|-------|-------|--------------|----------|
-| **Starter** | R$ 29,90/mês | Até 50 | Alertas básicos, Dashboard |
-| **Pro** | R$ 79,90/mês | Até 250 | Relatórios, Histórico, API |
-| **Enterprise** | R$ 199,90/mês | Ilimitado | Tudo + Suporte prioritário |
+| Plano | Preço | Medicamentos |
+|-------|-------|--------------|
+| **Starter** | R$ 29,90/mês | Até 50 |
+| **Pro** | R$ 79,90/mês | Até 250 |
+| **Enterprise** | R$ 199,90/mês | Ilimitado |
 
 ### Card de Cada Plano
 
@@ -130,10 +133,7 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 │  R$ 79,90 / mês                    │
 │                                     │
 │  ✓ Até 250 medicamentos           │
-│  ✓ Alertas avançados               │
-│  ✓ Relatórios completos            │
-│  ✓ Histórico de 12 meses           │
-│  ✓ Suporte por email               │
+│  ✓ Todas as funcionalidades        │
 │                                     │
 │  [Plano Atual] / [Escolher Plano]  │
 └─────────────────────────────────────┘
@@ -197,6 +197,7 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 
 | Evento | Ação |
 |--------|------|
+| `checkout.session.completed` | Ativa assinatura após pagamento inicial |
 | `invoice.paid` | Atualiza status da fatura para "Pago" |
 | `invoice.payment_failed` | Marca fatura como "Atrasado", envia notificação |
 | `customer.subscription.created` | Cria registro de assinatura |
@@ -262,7 +263,7 @@ Acesso mantido até fim do período
 Webhook: subscription.deleted
     │
     ▼
-Acesso reduzido para plano gratuito/starter
+Acesso reduzido para plano Starter (mínimo)
 ```
 
 ---

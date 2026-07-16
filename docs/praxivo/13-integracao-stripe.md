@@ -44,13 +44,8 @@ Documentação técnica da integração com Stripe para pagamentos, assinaturas 
 | Recurso | Starter | Pro | Enterprise |
 |---------|---------|-----|------------|
 | Medicamentos cadastrados | 50 | 250 | Ilimitado |
-| Alertas básicos | ✓ | ✓ | ✓ |
-| Dashboard | Básica | Completa | Completa |
-| Relatórios | Básicos | Completos | Completos + Custom |
-| Histórico | 30 dias | 12 meses | Ilimitado |
-| Suporte | Email | Email + Chat | Prioritário |
-| API | ✗ | ✓ | ✓ |
-| Exportação | PDF | PDF + CSV | PDF + CSV + Excel |
+
+> **Nota:** Todas as funcionalidades (Dashboard, Relatórios, Histórico, Alertas, etc.) estão disponíveis em todos os planos. A única diferença é o limite de medicamentos cadastrados.
 
 ---
 
@@ -117,7 +112,7 @@ GET /api/stripe/subscription/:userId
   "status": "active",
   "plan": "pro",
   "medicationLimit": 250,
-  "currentPeriodEnd": "2024-08-15T00:00:00Z",
+  "currentPeriodEnd": "2026-08-15T00:00:00Z",
   "cancelAtPeriodEnd": false,
   "paymentMethod": {
     "brand": "visa",
@@ -138,7 +133,7 @@ GET /api/stripe/invoices/:userId
   "invoices": [
     {
       "id": "in_...",
-      "date": "2024-07-15",
+      "date": "2026-07-15",
       "amount": 7990,
       "currency": "brl",
       "status": "paid",
@@ -374,7 +369,7 @@ const event = stripe.webhooks.constructEvent(
 | Alertas | ✓ Visualização apenas |
 | Relatórios | ⚠️ Básicos apenas |
 | Histórico | ✓ Visualização apenas |
-| Configurações | ⚠️ Perfil apenas |
+| Configurações | ⚠️ Perfil e método de pagamento |
 | Notificações | ✓ |
 
 **Aviso exibido:**
@@ -388,8 +383,8 @@ const event = stripe.webhooks.constructEvent(
 | Medicamentos | ❌ Bloqueado |
 | Alertas | ❌ Bloqueado |
 | Relatórios | ❌ Bloqueado |
-| Histórico | ⚠️ Visualização apenas (últimos 7 dias) |
-| Configurações | ⚠️ Apenas "Métodos de Pagamento" |
+| Histórico | ⚠️ Apenas últimos 7 dias |
+| Configurações | ⚠️ Apenas método de pagamento |
 | Notificações | ⚠️ Apenas sobre pagamento |
 
 **Aviso exibido:**

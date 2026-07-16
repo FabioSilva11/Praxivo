@@ -2,17 +2,23 @@
 
 Plataforma web moderna para controle de validade de medicamentos.
 
-![Praxivo](https://img.shields.io/badge/Praxivo-SaaS-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Status](https://img.shields.io/badge/status-Produção-brightgreen)
+![Praxivo](https://img.shields.io/badge/Praxivo-SaaS-blue) ![Docs](https://img.shields.io/badge/docs-Especificação-orange) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
 ## Sobre
 
-O **Praxivo** é uma plataforma SaaS completa para controle de validade de medicamentos, ajudando pessoas e empresas a evitar desperdícios, reduzir custos e organizar seus estoques.
+O **Praxivo** é uma plataforma SaaS para controle de validade de medicamentos, ajudando pessoas e empresas a evitar desperdícios, reduzir custos e organizar seus estoques.
 
 ### Objetivo
 
 Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um único lugar, receba alertas antes do vencimento e reduza desperdícios.
+
+---
+
+## Status do Projeto
+
+🟡 **Fase de Especificação** — Este repositório contém a documentação de especificação/planejamento do projeto. A implementação do código-fonte ainda não foi iniciada.
 
 ---
 
@@ -32,7 +38,7 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 - Marcação para doação (apenas produtos válidos)
 - Antecipação de uso
 - Descarte adequado (segundo normas ANVISA)
-- registro de descarte inadequado (lixo)
+- Registro de descarte inadequado (lixo)
 - Baixa de estoque
 - Duplicação de cadastro
 - Seleção múltipla para ações em lote
@@ -50,7 +56,7 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 
 ### Histórico
 - Timeline de todas as ações
-- Filtros por tipo, usuário, medicamento e data
+- Filtros por ação, medicamento e data
 - Detalhes expandíveis com comparação antes/depois
 
 ### Área Financeira
@@ -81,17 +87,17 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 
 ---
 
-## Stack Tecnológica
+## Stack Tecnológica (Planejada)
 
-- **Frontend:** React/Next.js
+- **Frontend:** A definir (sugestão: React/Next.js)
 - **Estilo:** Inspirado em Linear, Notion, Vercel, Stripe Dashboard
 - **Pagamentos:** Stripe (Checkout, Customer Portal, Webhooks)
 - **Banco de Dados:** A definir
-- ** Hospedagem:** A definir
+- **Hospedagem:** A definir
 
 ---
 
-## Estrutura do Projeto
+## Estrutura da Documentação
 
 ```
 docs/praxivo/
@@ -157,9 +163,11 @@ Integração completa com **Stripe**:
 | Verde | Indicadores positivos, sucesso |
 | Amarelo | Alertas, vencimento próximo |
 | Vermelho | Vencidos, erros, exclusão |
+| Laranja | Prioridade média, descartados |
+| Roxo | Transferências, ações secundárias |
 | Cinza | Neutro, textos secundários |
 
-### responsividade
+### Responsividade
 
 - **Desktop:** Layout completo com sidebar
 - **Tablet:** Sidebar drawer, cards adaptados
@@ -167,7 +175,7 @@ Integração completa com **Stripe**:
 
 ---
 
-## Como Rodar
+## Como Rodar (quando implementado)
 
 ```bash
 # Clonar o repositório
@@ -183,11 +191,7 @@ npm install
 npm run dev
 ```
 
----
-
-## Status
-
-🟢 **Em produção**
+> ⚠️ Instruções válidas apenas após a implementação do código-fonte.
 
 ---
 

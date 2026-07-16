@@ -97,7 +97,7 @@ Página exclusiva para visualizar e gerenciar medicamentos com base no status de
 │ 📍 Local: Farmácia Principal                    │
 │ 🏭 Fabricante: Nome da Empresa                  │
 │                                                 │
-│ [Descartar] [Ver Detalhes] [Estender Validade]  │
+│ [Descartar] [Ver Detalhes]                       │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -125,7 +125,6 @@ Página exclusiva para visualizar e gerenciar medicamentos com base no status de
 | Transferir | Ghost | Abre modal de transferência |
 | Descartar | Danger (outline) | Abre modal de confirmação de descarte |
 | Marcar como Lixo | Danger (ghost) | Abre modal de descarte inadequado |
-| Estender Validade | Ghost | Abre modal para atualizar data (se aplicável) |
 
 **⚠️ Regra:** Botão "Doar" só aparece para medicamentos com validade vigente. Medicamentos vencidos/expirados não podem ser doados.
 
@@ -167,22 +166,6 @@ Página exclusiva para visualizar e gerenciar medicamentos com base no status de
 
 ---
 
-## Modal: Estender Validade
-
-### Elementos
-
-| Elemento | Tipo | Obrigatório |
-|----------|------|-------------|
-| Nova data de validade | Input date | Sim |
-| Motivo da extensão | Textarea | Sim |
-
-### Validações
-- Nova data deve ser futura
-- Nova data deve ser posterior à data atual
-- Motivo deve ter mínimo 10 caracteres
-
----
-
 ## Empty State
 
 ### Quando não há alertas
@@ -220,6 +203,5 @@ Página exclusiva para visualizar e gerenciar medicamentos com base no status de
 | Filtro avançado | Por prioridade, local, categoria |
 | Pesquisa | Busca por nome, lote, fabricante |
 | Descarte | Marca medicamento como descartado |
-| Estender validade | Atualiza data de validade (se aplicável) |
 | Notificações | Push e email para alertas críticos |
 | Empty state | Mensagem quando não há alertas |

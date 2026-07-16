@@ -26,6 +26,10 @@ O design do Praxivo é inspirado em:
 | **Amarelo Claro** | Fundo de badges de alerta | `#FEF9C3` |
 | **Vermelho** | Vencidos, erros, exclusão | `#DC2626` |
 | **Vermelho Claro** | Fundo de badges de erro | `#FEE2E2` |
+| **Laranja** | Prioridade média, status "Descartado" | `#F97316` |
+| **Laranja Claro** | Fundo de badges de prioridade média | `#FFEDD5` |
+| **Roxo** | Transferências, ações secundárias | `#8B5CF6` |
+| **Roxo Claro** | Fundo de badges de transferência | `#EDE9FE` |
 | **Cinza 50** | Fundo da página | `#F9FAFB` |
 | **Cinza 100** | Fundo de cards | `#F3F4F6` |
 | **Cinza 200** | Bordas leves | `#E5E7EB` |
@@ -50,6 +54,8 @@ O design do Praxivo é inspirado em:
 | **Verde** | Mesmo do light mode | `#22C55E` |
 | **Amarelo** | Mesmo do light mode | `#FACC15` |
 | **Vermelho** | Mesmo do light mode | `#EF4444` |
+| **Laranja** | Mesmo do light mode | `#F97316` |
+| **Roxo** | Mesmo do light mode | `#8B5CF6` |
 
 ## Tipografia
 

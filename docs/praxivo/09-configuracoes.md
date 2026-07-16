@@ -255,6 +255,8 @@ Página de configurações do usuário e do sistema, organizada em abas.
 
 ## Aba 7: Pagamentos
 
+> **Nota:** Esta aba mostra informações resumidas da assinatura. Para métricas financeiras detalhadas, gráficos e faturas completas, acesse a página **Financeiro** (`/financeiro`).
+
 ### Seção: Plano Atual
 
 ```
@@ -275,9 +277,9 @@ Página de configurações do usuário e do sistema, organizada em abas.
 
 | Data | Descrição | Valor | Status |
 |------|-----------|-------|--------|
-| 15/07/2024 | Plano Pro - Mensal | R$ 79,90 | Pago ✓ |
-| 15/06/2024 | Plano Pro - Mensal | R$ 79,90 | Pago ✓ |
-| 15/05/2024 | Plano Pro - Mensal | R$ 79,90 | Pago ✓ |
+| 15/07/2026 | Plano Pro - Mensal | R$ 79,90 | Pago ✓ |
+| 15/06/2026 | Plano Pro - Mensal | R$ 79,90 | Pago ✓ |
+| 15/05/2026 | Plano Pro - Mensal | R$ 79,90 | Pago ✓ |
 
 ### Ações Disponíveis
 
@@ -372,16 +374,6 @@ Página de configurações do usuário e do sistema, organizada em abas.
 | Botão "Sincronizar" | Sincroniza dados de pagamento |
 | Última sincronização | Data/hora |
 
-### Seção: API
-
-| Elemento | Detalhes |
-|----------|----------|
-| Chave API | Mascarada com botão de copiar |
-| Botão "Gerar nova chave" | Gera nova chave de API |
-| Botão "Revogar chave" | Remove chave existente |
-| Documentação | Link "Ver documentação" |
-| Rate Limit | "1000 requests/hora" |
-
 ---
 
 ## Comportamentos Gerais
@@ -413,4 +405,4 @@ Página de configurações do usuário e do sistema, organizada em abas.
 | Notificações | Canais, tipos, horário silencioso |
 | Segurança | Senha, 2FA, sessões, exclusão |
 | Pagamentos | Plano atual, histórico, mudar plano, cancelar |
-| Conexões | OAuth, integrações, API |
+| Conexões | Integração Stripe |

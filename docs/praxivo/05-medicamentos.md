@@ -327,7 +327,7 @@ Mesmos campos do cadastro, preenchidos com dados atuais.
 | Responsável | Text | Sim | Quem realizou o descarte |
 
 **⚠️ Aviso importante:**
-> "Esta ação registra descarte inadequado (lixo comum). Para descarte adequado, use a opção 'Descartar' que registra descarte according a normas sanitárias."
+> "Esta ação registra descarte inadequado (lixo comum). Para descarte adequado, use a opção 'Descartar' que registra descarte conforme normas sanitárias."
 
 **Após confirmação:**
 - Status muda para "Lixo"

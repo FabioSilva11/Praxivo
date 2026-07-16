@@ -142,11 +142,8 @@ app.use('/api/*', (req, res, next) => {
 |-------|---------|-----|------------|
 | Preço | R$ 29,90/mês | R$ 79,90/mês | R$ 199,90/mês |
 | Limite Medicamentos | 50 | 250 | Ilimitado |
-| Histórico | 30 dias | 12 meses | Ilimitado |
-| Alertas | Básicos | Completos | Completos |
-| Relatórios | Básicos | Completos | Custom |
-| API | Não | Sim | Sim |
-| Suporte | Email | Chat | Prioritário |
+
+> **Nota:** Todas as funcionalidades estão disponíveis em todos os planos. A única diferença é o limite de medicamentos cadastrados.
 
 ### Verificação de Limite
 

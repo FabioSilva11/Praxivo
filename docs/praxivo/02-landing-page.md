@@ -228,4 +228,4 @@ Rodapé
 - Meta title: "Praxivo - Controle de Validade de Medicamentos"
 - Meta description baseada no subtítulo do Hero
 - Open Graph tags para compartilhamento
-- Schema.org结构化数据
+- Schema.org com dados estruturados

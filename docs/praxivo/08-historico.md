@@ -71,17 +71,17 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 │ 🟢  Medicamento cadastrado                      │
 │     "Paracetamol 500mg foi cadastrado no        │
 │      sistema com validade até 12/2025"          │
-│     📅 15/07/2024 às 14:30  👤 João Silva      │
+│     📅 15/07/2026 às 14:30  👤 João Silva      │
 ├─────────────────────────────────────────────────┤
 │ 🔵  Medicamento editado                         │
 │     "Ibuprofeno 600mg - quantidade atualizada   │
 │      de 10 para 25 unidades"                    │
-│     📅 15/07/2024 às 10:15  👤 Maria Santos    │
+│     📅 15/07/2026 às 10:15  👤 Maria Santos    │
 ├─────────────────────────────────────────────────┤
 │ 🔴  Medicamento descartado                      │
 │     "Amoxicilina 500mg descartado - motivo:     │
 │      vencido há 30 dias"                        │
-│     📅 14/07/2024 às 16:45  👤 João Silva      │
+│     📅 14/07/2026 às 16:45  👤 João Silva      │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -112,7 +112,7 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 
 ### Timestamp
 - **Relativo:** "há 5 minutos", "ontem", "há 3 dias"
-- **Absoluto:** "15/07/2024 às 14:30"
+- **Absoluto:** "15/07/2026 às 14:30"
 - **Hover:** Mostra data/hora exata completa
 
 ---
@@ -127,7 +127,7 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 | Ação | Cadastrar |
 | Medicamento | Paracetamol 500mg |
 | Usuário | João Silva |
-| Data/Hora | 15/07/2024 14:30:22 |
+| Data/Hora | 15/07/2026 14:30:22 |
 | IP | 192.168.1.100 |
 | Detalhes | Dados antes/depois (para edições) |
 

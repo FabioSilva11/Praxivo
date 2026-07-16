@@ -9,8 +9,10 @@ Central de notificações do sistema, acessível de qualquer página.
 ## Acesso
 
 ### Localizações
-1. **Ícone de sino no header** → Abre dropdown
-2. **Página dedicada:** `/notificacoes` → Visualização completa
+1. **Ícone de sino no header** → Abre dropdown (acesso rápido)
+2. **Link "Ver todas as notificações" no dropdown** → Navega para `/notificacoes`
+
+> ⚠️ **Nota:** A página `/notificacoes` não possui item próprio na sidebar. O acesso é feito exclusivamente pelo sino no header.
 
 ---
 
@@ -124,7 +126,8 @@ Central de notificações do sistema, acessível de qualquer página.
 
 | Prioridade | Critério | Cor |
 |------------|----------|-----|
-| Alta | Vence em 1-3 dias | Vermelho |
+| Crítico | Vencido ou vence hoje | Vermelho |
+| Alta | Vence em 1-3 dias | Vermelho claro |
 | Média | Vence em 4-7 dias | Laranja |
 | Baixa | Vence em 8-30 dias | Amarelo |
 
@@ -133,7 +136,7 @@ Central de notificações do sistema, acessível de qualquer página.
 - "⚠️ Amoxicilina 250mg vence amanhã!"
 
 **Descrição exemplo:**
-- "O medicamento Paracetamol 500mg (Lote: PAR-2024-001) vence em 03/08/2024. Localização: Farmácia Principal."
+- "O medicamento Paracetamol 500mg (Lote: PAR-2026-001) vence em 03/08/2026. Localização: Farmácia Principal."
 
 **Ações:**
 | Botão | Ação |
@@ -148,7 +151,7 @@ Central de notificações do sistema, acessível de qualquer página.
 
 **Título:** "🔴 Amoxicilina 500mg está vencido!"
 
-**Descrição:** "O medicamento Amoxicilina 500mg (Lote: AMX-2024-003) venceu em 15/07/2024. Tomar providências."
+**Descrição:** "O medicamento Amoxicilina 500mg (Lote: AMX-2026-003) venceu em 15/07/2026. Tomar providências."
 
 **⚠️ Regra:** Medicamentos vencidos NÃO podem ser doados. Apenas opções de descarte estão disponíveis.
 
@@ -239,7 +242,7 @@ Central de notificações do sistema, acessível de qualquer página.
 │          Descrição detalhada da notificação.    │
 │          Aqui pode ter mais texto se necessário. │
 │                                                 │
-│          📅 15/07/2024 às 14:30                 │
+│          📅 15/07/2026 às 14:30                 │
 │                                                 │
 │          [Ver Detalhes]  [Descartar]            │
 └─────────────────────────────────────────────────┘

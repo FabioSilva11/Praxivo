@@ -56,10 +56,10 @@ Página completa para gerenciar medicamentos com operações CRUD (Criar, Ler, A
 
 ### Alerta de Limite Atingido
 
-Quando usuário atinge 80% do limite:
+Quando atinge 80% do limite:
 > ⚠️ Você está usando 40 de 50 medicamentos do seu plano Starter.
 
-Quando usuário atinge 100% do limite:
+Quando atinge 100% do limite:
 > 🔴 Limite atingido! Você atingiu o limite de 50 medicamentos do seu plano Starter. Faça upgrade para cadastrar mais.
 > [Fazer Upgrade]
 
@@ -310,7 +310,6 @@ Mesmos campos do cadastro, preenchidos com dados atuais.
 
 **Após confirmação:**
 - Badge "Uso Prioritário" (amarelo)
-- Notificação push para equipe
 - Registro no histórico
 
 ---

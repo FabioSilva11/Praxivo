@@ -73,11 +73,11 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 
 ## Planos
 
-| Plano | Preço | Medicamentos | Usuários |
-|-------|-------|--------------|----------|
-| **Starter** | R$ 29,90/mês | 50 | 1 |
-| **Pro** | R$ 79,90/mês | 250 | 5 |
-| **Enterprise** | R$ 199,90/mês | Ilimitado | Ilimitado |
+| Plano | Preço | Medicamentos |
+|-------|-------|--------------|
+| **Starter** | R$ 29,90/mês | 50 |
+| **Pro** | R$ 79,90/mês | 250 |
+| **Enterprise** | R$ 199,90/mês | Ilimitado |
 
 ---
 

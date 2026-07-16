@@ -44,7 +44,6 @@ Documentação técnica da integração com Stripe para pagamentos, assinaturas 
 | Recurso | Starter | Pro | Enterprise |
 |---------|---------|-----|------------|
 | Medicamentos cadastrados | 50 | 250 | Ilimitado |
-| Usuários | 1 | 5 | Ilimitado |
 | Alertas básicos | ✓ | ✓ | ✓ |
 | Dashboard | Básica | Completa | Completa |
 | Relatórios | Básicos | Completos | Completos + Custom |
@@ -80,8 +79,8 @@ POST /api/stripe/checkout
 ```
 
 **Lógica:**
-1. Verificar se usuário já tem assinatura ativa
-2. Verificar se usuário já tem Customer no Stripe
+1. Verificar se já tem assinatura ativa
+2. Verificar se já tem Customer no Stripe
 3. Criar Customer se não existir
 4. Criar Checkout Session com `mode: "subscription"`
 5. Retornar URL do checkout
@@ -240,7 +239,7 @@ POST /api/webhooks/stripe
 
 | Evento | Ação |
 |--------|------|
-| `checkout.session.completed` | Ativar assinatura do usuário |
+| `checkout.session.completed` | Ativar assinatura |
 | `invoice.paid` | Atualizar status da fatura para "Pago" |
 | `invoice.payment_failed` | Marcar fatura como "Atrasado", restringir acesso |
 | `customer.subscription.created` | Criar registro no banco |
@@ -301,9 +300,9 @@ const event = stripe.webhooks.constructEvent(
 ### 3. Downgrade de Plano
 
 ```
-1. Usuário no Plano Pro (limite: 250)
+1. Conta no Plano Pro (limite: 250)
 2. Clica "Fazer Downgrade" → Plano Starter
-3. Sistema verifica: usuário tem mais de 50 medicamentos?
+3. Sistema verifica: tem mais de 50 medicamentos?
 4. Se SIM: bloqueia downgrade, exibe aviso
 5. Se NÃO: modal de confirmação
 6. Acesso mantido até fim do período
@@ -314,8 +313,8 @@ const event = stripe.webhooks.constructEvent(
 ### 4. Cancelamento
 
 ```
-1. Usuário clica "Cancelar Assinatura"
-2. Sistema verifica: usuário pode cancelar?
+1. Clica "Cancelar Assinatura"
+2. Sistema verifica: pode cancelar?
 3. Modal: motivo do cancelamento (opcional)
 4. Confirma cancelamento
 5. Stripe: cancel at period end
@@ -351,8 +350,7 @@ const event = stripe.webhooks.constructEvent(
 | `active` | Pagamento em dia | Total |
 | `past_due` | Pagamento atrasado (1-7 dias) | Parcial |
 | `unpaid` | Não pago (após 7 dias) | Mínimo |
-| `canceled` | Cancelado pelo usuário | Mínimo |
-| `trialing` | Em período de teste | Total |
+| `canceled` | Cancelado | Mínimo |
 
 ### Restrições por Status
 
@@ -436,7 +434,7 @@ const event = stripe.webhooks.constructEvent(
 ### Verificação de Limite
 
 **Antes de cadastrar medicamento:**
-1. Buscar plano atual do usuário
+1. Buscar plano atual da conta
 2. Contar medicamentos ativos (não descartados/excluídos)
 3. Comparar com limite do plano
 4. Se atingiu limite: bloquear cadastro
@@ -461,7 +459,7 @@ const event = stripe.webhooks.constructEvent(
 ### Downgrade com Mais Medicamentos
 
 **Ao fazer downgrade:**
-1. Sistema verifica: usuário tem mais medicamentos que o novo limite?
+1. Sistema verifica: tem mais medicamentos que o novo limite?
 2. Se SIM: bloquear downgrade
 3. Mensagem: "Você tem [X] medicamentos, mas o plano [novo] permite apenas [Y]. Exclua ou descarte medicamentos antes de fazer downgrade."
 

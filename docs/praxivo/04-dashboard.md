@@ -183,7 +183,6 @@ A Dashboard é a página principal pós-login. Deve fornecer uma visão completa
   - Ícone do tipo de ação (adicionar, editar, excluir, descartar)
   - Descrição da ação
   - Timestamp relativo ("há 2 horas", "ontem")
-  - Usuário que realizou (se multi-usuário)
 - **Tipos de atividade:**
   - Medicamento cadastrado (azul)
   - Medicamento editado (cinza)

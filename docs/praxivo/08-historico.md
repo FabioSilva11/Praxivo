@@ -51,7 +51,6 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 | Filtro | Tipo | Opções |
 |--------|------|--------|
 | Tipo de Ação | Multi-select | Cadastrar, Editar, Excluir, Descartar, Lixo, Doação, Transferência, Antecipar Uso, Baixa, Visualizar, Alerta Enviado |
-| Usuário | Multi-select | Lista de usuários |
 | Medicamento | Search + Select | Busca por medicamento |
 | Data | Range | De / Até |
 
@@ -94,7 +93,6 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 | Título | Ação realizada em negrito |
 | Descrição | Detalhes da ação em texto normal |
 | Data/Hora | Timestamp relativo e absoluto |
-| Usuário | Nome e avatar (se multi-usuário) |
 
 ### Cores por Tipo de Ação
 
@@ -177,7 +175,7 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 | Funcionalidade | Descrição |
 |----------------|-----------|
 | Timeline visual | Lista cronológica com indicadores |
-| Filtros | Por ação, usuário, medicamento, data |
+| Filtros | Por ação, medicamento, data |
 | Pesquisa | Busca em descrições |
 | Detalhes expandíveis | Informações completas da ação |
 | Comparação | Antes/Depois para edições |

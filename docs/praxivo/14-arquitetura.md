@@ -142,7 +142,6 @@ app.use('/api/*', (req, res, next) => {
 |-------|---------|-----|------------|
 | Preço | R$ 29,90/mês | R$ 79,90/mês | R$ 199,90/mês |
 | Limite Medicamentos | 50 | 250 | Ilimitado |
-| Limite Usuários | 1 | 5 | Ilimitado |
 | Histórico | 30 dias | 12 meses | Ilimitado |
 | Alertas | Básicos | Completos | Completos |
 | Relatórios | Básicos | Completos | Custom |
@@ -167,7 +166,7 @@ async function checkMedicationLimit(userId: string): Promise<boolean> {
 
 ### Bloqueio de Cadastro
 
-Quando usuário atinge o limite:
+Quando atinge o limite:
 
 ```typescript
 async function createMedication(userId: string, data: MedicationData) {
@@ -510,7 +509,7 @@ src/
 |--------|------------|-----------|
 | Acesso negado | HIGH | Tentativa de acessar dado de outro usuário |
 | Token inválido | MEDIUM | Tentativa de autenticação com token inválido |
-| Limite atingido | LOW | Usuário tentou exceder limite do plano |
+| Limite atingido | LOW | Conta tentou exceder limite do plano |
 | Pagamento falhou | MEDIUM | Cobrança recorrente falhou |
 | Conta bloqueada | HIGH | Acesso bloqueado por inadimplência |
 
@@ -520,7 +519,7 @@ src/
 |---------|-----------|
 | Tentativas de acesso indevido | Queries sem filtro userId (bloqueadas) |
 | Tokens expirados | Autenticação com token expirado |
-| Limites atingidos | Usuários que atingiram limite do plano |
+| Limites atingidos | Contas que atingiram limite do plano |
 | Pagamentos pendentes | Assinaturas com pagamento atrasado |
 
 ---

@@ -115,11 +115,11 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 
 ### Planos Disponíveis
 
-| Plano | Preço | Medicamentos | Usuários | Recursos |
-|-------|-------|--------------|----------|----------|
-| **Starter** | R$ 29,90/mês | Até 50 | 1 | Alertas básicos, Dashboard |
-| **Pro** | R$ 79,90/mês | Até 250 | 5 | Relatórios, Histórico, API |
-| **Enterprise** | R$ 199,90/mês | Ilimitado | Ilimitado | Tudo + Suporte prioritário |
+| Plano | Preço | Medicamentos | Recursos |
+|-------|-------|--------------|----------|
+| **Starter** | R$ 29,90/mês | Até 50 | Alertas básicos, Dashboard |
+| **Pro** | R$ 79,90/mês | Até 250 | Relatórios, Histórico, API |
+| **Enterprise** | R$ 199,90/mês | Ilimitado | Tudo + Suporte prioritário |
 
 ### Card de Cada Plano
 
@@ -130,7 +130,6 @@ Página com métricas financeiras, gestão de assinaturas e integração complet
 │  R$ 79,90 / mês                    │
 │                                     │
 │  ✓ Até 250 medicamentos           │
-│  ✓ 5 usuários                      │
 │  ✓ Alertas avançados               │
 │  ✓ Relatórios completos            │
 │  ✓ Histórico de 12 meses           │

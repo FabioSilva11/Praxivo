@@ -67,7 +67,7 @@ Dashboard (página principal pós-login)
 | `00-visao-geral.md` | Este arquivo - visão geral do projeto |
 | `01-design-system.md` | Paleta, tipografia, componentes, dark/light mode |
 | `02-landing-page.md` | Hero, benefícios, como funciona, indicadores, FAQ, rodapé |
-| `03-autenticacao.md` | Login, cadastro, recuperação de senha, OAuth |
+| `03-autenticacao.md` | Login, cadastro, recuperação de senha |
 | `04-dashboard.md` | Cards, gráficos, calendário, atividades |
 | `05-medicamentos.md` | CRUD completo de medicamentos |
 | `06-alertas.md` | Sistema de alertas por vencimento |

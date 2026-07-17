@@ -74,7 +74,6 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 - Notificações
 - Segurança (Senha, 2FA, Sessões)
 - Pagamentos
-- Conexões (Google, Microsoft, Slack, Stripe, Webhook)
 
 ---
 
@@ -144,13 +143,15 @@ docs/praxivo/
 
 ## Pagamentos
 
-Integração completa com **Stripe**:
+Integração completa com **Stripe** — a única integração externa do produto, usada exclusivamente para pagamentos:
 
 - Checkout para novas assinaturas
 - Customer Portal para gerenciar pagamento
-- Webhooks para processamento de eventos
+- Webhooks apenas para eventos de status de pagamento/assinatura (ex: `invoice.paid`, `invoice.payment_failed`, `customer.subscription.updated`)
 - Restrições automáticas por status de pagamento
 - Dados preservados mesmo com inadimplência
+
+> Não há login social (Google/Microsoft) nem integrações com Slack ou outras ferramentas — a autenticação é feita por email/senha, e o Stripe é usado apenas para cobrança.
 
 ---
 

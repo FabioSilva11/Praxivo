@@ -20,7 +20,7 @@ Página de configurações do usuário e do sistema, organizada em abas.
 │          │  [Tabs]                           │
 │          │  Perfil | Empresa | Idioma | Tema  │
 │          │  Notificações | Segurança |        │
-│          │  Pagamentos | Conexões             │
+│          │  Pagamentos                       │
 │          │                                   │
 │          │  ┌─────────────────────────────┐  │
 │          │  │ Conteúdo da Aba Ativa       │  │
@@ -44,7 +44,6 @@ Página de configurações do usuário e do sistema, organizada em abas.
 | Notificações | Bell | Preferências de notificação |
 | Segurança | Shield | Senha e segurança |
 | Pagamentos | CreditCard | Métodos de pagamento e faturas |
-| Conexões | Link | Integrações externas |
 
 ### Estilo das Abas
 - **Desktop:** Abas horizontais no topo
@@ -345,37 +344,6 @@ Página de configurações do usuário e do sistema, organizada em abas.
 
 ---
 
-## Aba 8: Conexões
-
-### Seção: Integrações Disponíveis
-
-| Integração | Status | Ação |
-|------------|--------|------|
-| Google | Conectado / Desconectado | Botão "Conectar" / "Desconectar" |
-| Microsoft | Desconectado | Botão "Conectar" |
-| Slack | Desconectado | Botão "Conectar" |
-| Stripe | Conectado / Desconectado | Botão "Conectar" / "Configurar" |
-| Webhook | Desconectado | Botão "Configurar" |
-
-### Para cada integração:
-- Ícone + Nome
-- Descrição do que faz
-- Status (Conectado/Desconectado)
-- Botão de ação
-- Última sincronização (se conectado)
-
-### Seção: Stripe
-
-| Elemento | Detalhes |
-|----------|----------|
-| Status | "Conectado" / "Desconectado" |
-| Conta Stripe | ID da conta conectada |
-| Botão "Configurar" | Abre dashboard Stripe |
-| Botão "Sincronizar" | Sincroniza dados de pagamento |
-| Última sincronização | Data/hora |
-
----
-
 ## Comportamentos Gerais
 
 ### Salvar Alterações
@@ -405,4 +373,3 @@ Página de configurações do usuário e do sistema, organizada em abas.
 | Notificações | Canais, tipos, horário silencioso |
 | Segurança | Senha, 2FA, sessões, exclusão |
 | Pagamentos | Plano atual, histórico, mudar plano, cancelar |
-| Conexões | Integração Stripe |

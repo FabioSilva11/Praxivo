@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e OAuth.
+Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e Verificação de Email (apenas email/senha — sem login social).
 
 ---
 
@@ -30,7 +30,6 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 | Botão | Variante | Ação |
 |-------|----------|------|
 | Entrar | Primary (full-width) | Valida credenciais e redireciona para `/dashboard` |
-| Entrar com Google | Secondary com ícone Google (full-width) | OAuth com Google |
 | Entrar com Email | Ghost (full-width) | Magic link / Email de verificação |
 
 ### Links Inferiores
@@ -82,7 +81,6 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 | Botão | Variante | Ação |
 |-------|----------|------|
 | Criar conta | Primary (full-width) | Cria conta e redireciona para onboarding |
-| Cadastrar com Google | Secondary com ícone (full-width) | OAuth com Google |
 
 ### Links Inferiores
 > Já tem uma conta? **Entrar**
@@ -211,23 +209,6 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 - Mensagens de erro desaparecem ao digitar novamente
 - Loading states em todos os botões de ação
 - Redirecionamento automático se já autenticado
-
----
-
-## OAuth - Google
-
-### Fluxo
-1. Usuário clica "Entrar com Google"
-2. Abre popup/modal do Google
-3. Usuário autoriza
-4. Callback com token
-5. Backend valida e cria conta se necessário
-6. Redireciona para `/dashboard`
-
-### Tratamento de Erros
-- Usuário cancela popup: mensagem "Login cancelado"
-- Erro de rede: toast de erro + botão retry
-- Email já vinculado a outra conta: mensagem explicativa
 
 ---
 

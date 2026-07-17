@@ -80,6 +80,8 @@ Dashboard (página principal pós-login)
 | `13-integracao-stripe.md` | Documentação técnica da integração Stripe |
 | `14-arquitetura.md` | Arquitetura, multi-tenancy, limites de planos |
 
+> **Nota:** a política de segurança consolidada fica em `SECURITY.md`, na raiz do repositório (fora de `docs/praxivo/`), pois é o local padrão reconhecido pelo GitHub para esse tipo de documento.
+
 ## Premissas Técnicas
 
 - **Framework:** A ser definido (sugestão: React/Next.js)

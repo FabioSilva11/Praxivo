@@ -100,22 +100,25 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 ## Estrutura da Documentação
 
 ```
-docs/praxivo/
-├── 00-visao-geral.md          # Visão geral do projeto
-├── 01-design-system.md         # Paleta, tipografia, componentes
-├── 02-landing-page.md          # Landing page completa
-├── 03-autenticacao.md          # Login, cadastro, OAuth
-├── 04-dashboard.md             # Dashboard principal
-├── 05-medicamentos.md          # CRUD de medicamentos
-├── 06-alertas.md               # Sistema de alertas
-├── 07-relatorios.md            # Relatórios e gráficos
-├── 08-historico.md             # Timeline de atividades
-├── 09-configuracoes.md         # Configurações do usuário
-├── 10-area-financeira.md       # Área financeira + Stripe
-├── 11-notificacoes.md          # Central de notificações
-├── 12-responsividade.md        # Responsividade desktop/tablet/mobile
-├── 13-integracao-stripe.md     # Documentação técnica Stripe
-└── 14-arquitetura.md           # Arquitetura e multi-tenancy
+Praxivo/
+├── README.md                       # Este arquivo
+├── SECURITY.md                     # Política de segurança consolidada
+└── docs/praxivo/
+    ├── 00-visao-geral.md           # Visão geral do projeto
+    ├── 01-design-system.md         # Paleta, tipografia, componentes
+    ├── 02-landing-page.md          # Landing page completa
+    ├── 03-autenticacao.md          # Login, cadastro, recuperação de senha
+    ├── 04-dashboard.md             # Dashboard principal
+    ├── 05-medicamentos.md          # CRUD de medicamentos
+    ├── 06-alertas.md                # Sistema de alertas
+    ├── 07-relatorios.md            # Relatórios e gráficos
+    ├── 08-historico.md             # Timeline de atividades
+    ├── 09-configuracoes.md         # Configurações do usuário
+    ├── 10-area-financeira.md       # Área financeira + Stripe
+    ├── 11-notificacoes.md          # Central de notificações
+    ├── 12-responsividade.md        # Responsividade desktop/tablet/mobile
+    ├── 13-integracao-stripe.md     # Documentação técnica Stripe
+    └── 14-arquitetura.md           # Arquitetura e multi-tenancy
 ```
 
 ---

@@ -139,6 +139,8 @@ docs/praxivo/
 - Webhook verification com assinatura
 - Rate limiting em todas as APIs
 
+📄 Política de segurança completa e consolidada: **[SECURITY.md](./SECURITY.md)**
+
 ---
 
 ## Pagamentos

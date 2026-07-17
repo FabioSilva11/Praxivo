@@ -85,8 +85,9 @@ Dashboard (página principal pós-login)
 ## Premissas Técnicas
 
 - **Framework:** A ser definido (sugestão: React/Next.js)
+- **Backend-as-a-Service:** Supabase (banco Postgres, Auth, Storage e Realtime)
 - **Estilo:** Inspirado em Linear, Notion, Vercel, Stripe Dashboard, Raycast
 - **Pagamentos:** Stripe (Checkout, Customer Portal, Webhooks) - Produção
-- **Multi-tenancy:** Isolamento completo de dados por usuário
+- **Multi-tenancy:** Isolamento completo de dados por usuário via Row Level Security (RLS) do Supabase
 - **Planos:** Starter (50), Pro (250), Enterprise (ilimitado)
 - **Componentização:** Código limpo, componentizado e escalável

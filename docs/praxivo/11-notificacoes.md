@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Central de notificações do sistema, acessível de qualquer página.
+Central de notificações do sistema, acessível de qualquer página. Novas notificações e o contador do badge chegam via **Supabase Realtime** (subscription na tabela `notifications`), sem necessidade de recarregar a página ou fazer polling.
 
 ---
 

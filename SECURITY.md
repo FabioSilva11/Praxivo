@@ -8,23 +8,25 @@
 
 ## 1. Autenticação
 
+Implementada via **Supabase Auth** — não é um sistema de JWT/bcrypt construído do zero.
+
 | Medida | Implementação |
 |--------|----------------|
-| Método de login | Email + senha (sem login social/OAuth) |
-| Hash de senha | bcrypt, salt rounds: 12 |
+| Método de login | Email + senha via Supabase Auth (sem login social/OAuth) |
+| Hash de senha | Gerenciado internamente pelo Supabase Auth (bcrypt) |
 | Senha mínima aceita | 8 caracteres |
-| Tokens de sessão | JWT — access token expira em 7 dias, refresh token em 30 dias |
-| Verificação de email | Obrigatória antes de acessar o dashboard; token expira em 24h |
-| Recuperação de senha | Link único por email, de uso único |
-| Rate limiting de login | Máximo 5 tentativas em 15 minutos por conta/IP |
-| CSRF | Token CSRF em todos os formulários |
+| Tokens de sessão | JWT (access + refresh) emitidos e renovados pelo Supabase Auth |
+| Verificação de email | Fluxo nativo do Supabase Auth; obrigatória antes de acessar o dashboard; link expira em 24h |
+| Recuperação de senha | Fluxo nativo do Supabase Auth (`resetPasswordForEmail`), link único de uso único |
+| Rate limiting de login | Limites nativos do Supabase Auth + regra adicional da aplicação (5 tentativas em 15 minutos por conta) |
+| CSRF | Client SDK do Supabase usa Bearer token, reduzindo a superfície de CSRF tradicional |
 | HTTPS | Obrigatório em produção (sem exceções) |
 
 O indicador de força de senha (Média/Forte) reforça boas práticas acima do mínimo, mas o mínimo aceito em si já é 8 caracteres — não existe mais a inconsistência de aceitar como válida uma senha que o próprio indicador classificaria como fraca.
 
 ### Autenticação de Dois Fatores (2FA)
 - Opcional, ativável em Configurações › Segurança
-- Baseado em app autenticador (TOTP — compatível com Google Authenticator, Authy, etc.)
+- TOTP nativo do Supabase Auth (`auth.mfa`), compatível com Google Authenticator, Authy, etc.
 - 8 códigos de backup de uso único, gerados na ativação
 
 ### Sessões
@@ -39,23 +41,42 @@ Princípio central do sistema: **um usuário nunca pode ver ou modificar dados d
 
 | Camada | Como o isolamento é garantido |
 |--------|-------------------------------|
-| Banco de dados | Row Level Security (RLS) habilitada em todas as tabelas com dado de usuário (`medications`, `alerts`, `history`, etc.) |
-| Query | **Toda** query passa por `WHERE user_id = ?` — nunca há um `SELECT * FROM medications` sem filtro |
-| Middleware da API | Extrai `userId` do JWT e injeta automaticamente em todas as queries antes de chegar ao service layer |
+| Banco de dados (defesa primária) | Row Level Security (RLS) do Postgres, habilitada em todas as tabelas com dado de usuário (`medications`, `alerts`, `history`, `notifications`) — políticas usam `auth.uid()`, a função nativa do Supabase que identifica o usuário autenticado |
+| Query | **Toda** query passa por `WHERE user_id = auth.uid()` (via política RLS) — nunca há um `SELECT * FROM medications` sem filtro |
+| Middleware da API (defesa extra) | Extrai `userId` do JWT e injeta automaticamente em todas as queries antes de chegar ao service layer — camada adicional, útil como fail-safe caso alguma chamada use a `service_role` key (que ignora RLS) |
 | Validação de propriedade | Antes de ler/atualizar/excluir um recurso, o backend confirma que `resource.user_id === userId` da sessão — se não bater, retorna "não encontrado" (nunca "acesso negado", para não vazar a existência do recurso) |
 
 Fluxo de validação em camadas (Frontend → API Gateway → Service Layer → Database → Resposta):
 1. Frontend valida formato (UX, não é segurança de verdade)
-2. API Gateway valida JWT e autorização
-3. Service Layer aplica regras de negócio + injeta `userId`
-4. Database aplica RLS como última linha de defesa
+2. API Gateway valida JWT (emitido pelo Supabase Auth) e autorização
+3. Service Layer aplica regras de negócio + injeta `userId` (defesa extra)
+4. Database aplica RLS como **defesa primária**
 5. Resposta é filtrada antes de sair (nunca retornar campos internos como hash de senha)
 
-> Ver `14-arquitetura.md` para os exemplos de SQL e middleware.
+> Ver `14-arquitetura.md` para os exemplos de SQL das políticas de RLS.
 
 ---
 
-## 3. Pagamentos (Stripe)
+## 3. Storage e Realtime (Supabase)
+
+### Storage
+| Medida | Implementação |
+|--------|----------------|
+| Buckets | Privados por padrão (foto de perfil, logo da empresa) — nunca públicos |
+| Controle de acesso | Políticas de RLS no Storage, análogas às do banco: um usuário só acessa arquivos no seu próprio "diretório" (`{user_id}/...`) |
+| Formatos/tamanho | Validados no frontend e reforçados por política no bucket (ex: só imagem, máx 2MB para avatar / 1MB para logo) |
+| URLs de acesso | Assinadas e temporárias (signed URLs), não links públicos permanentes |
+
+### Realtime
+| Medida | Implementação |
+|--------|----------------|
+| Escopo das subscriptions | Dashboard (`medications`, `alerts`) e Notificações (`notifications`) |
+| Autorização | Subscriptions do Supabase Realtime respeitam as mesmas políticas de RLS das tabelas — um usuário não recebe eventos de dados de outra conta |
+| Uso | Atualização ao vivo de cards do dashboard e badge de notificações, sem polling |
+
+---
+
+## 4. Pagamentos (Stripe)
 
 O Stripe é a **única integração externa** do produto, usada exclusivamente para processamento de pagamentos — não há login social nem integrações com Slack, Google Workspace, Microsoft 365 ou qualquer outra ferramenta de terceiros.
 
@@ -79,7 +100,7 @@ Ver `13-integracao-stripe.md` para o detalhe de cada evento e o tratamento de er
 
 ---
 
-## 4. Proteção de Dados em Inadimplência
+## 5. Proteção de Dados em Inadimplência
 
 Quando um pagamento falha ou uma assinatura é cancelada, os dados do usuário **nunca são deletados** — apenas ficam ocultos até a reativação:
 
@@ -92,18 +113,18 @@ Isso evita perda de dados por atraso de pagamento e permite reativação instant
 
 ---
 
-## 5. Infraestrutura e Rede
+## 6. Infraestrutura e Rede
 
 | Medida | Implementação |
 |--------|----------------|
 | HTTPS | Obrigatório em toda a aplicação, sem exceção |
 | Rate limiting | Aplicado em todas as rotas de API, não só login |
-| Backup | Full diário (retenção 30 dias) + incremental a cada 6h (retenção 7 dias) + transacional contínuo (retenção 7 dias) |
+| Backup | Gerenciado pelo Supabase (Postgres) — full diário (retenção 30 dias) + incremental a cada 6h (retenção 7 dias) + transacional contínuo (retenção 7 dias), conforme plano contratado |
 | Recuperação | Meta de < 1h para dados corrompidos, < 15min para falha de servidor, < 4h para desastre completo |
 
 ---
 
-## 6. Logs e Monitoramento de Segurança
+## 7. Logs e Monitoramento de Segurança
 
 | Evento | Severidade |
 |--------|------------|
@@ -117,12 +138,12 @@ Essas métricas alimentam o monitoramento de tentativas de violação de isolame
 
 ---
 
-## 7. O que ainda não está definido
+## 8. O que ainda não está definido
 
 Como o projeto está em fase de especificação, os seguintes pontos de segurança **ainda não têm uma decisão documentada** e precisam ser resolvidos antes da implementação:
 
-- [ ] Banco de dados e hospedagem (README ainda marca como "A definir") — isso afeta diretamente como RLS será implementado na prática
-- [ ] Política de rotação de segredos (`STRIPE_SECRET_KEY`, `JWT_SECRET`, etc.)
+- [ ] Hospedagem do frontend/API (README ainda marca como "A definir" — o banco/auth/storage já ficam definidos no Supabase)
+- [ ] Política de rotação de segredos (`SUPABASE_SERVICE_ROLE_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`)
 - [ ] Processo formal de resposta a incidentes de segurança
 - [ ] Política de retenção de logs de segurança (por quanto tempo ficam armazenados)
 

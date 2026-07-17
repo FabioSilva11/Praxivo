@@ -60,7 +60,7 @@ Página de configurações do usuário e do sistema, organizada em abas.
 | Elemento | Detalhes |
 |----------|----------|
 | Avatar | Imagem circular, 96x96px |
-| Botão "Alterar Foto" | Upload de imagem |
+| Botão "Alterar Foto" | Upload de imagem (armazenado no Supabase Storage, bucket privado por usuário) |
 | Botão "Remover" | Remove foto, usa avatar com iniciais |
 | Formatos aceitos | JPG, PNG, WebP |
 | Tamanho máximo | 2MB |
@@ -119,7 +119,7 @@ Página de configurações do usuário e do sistema, organizada em abas.
 | Elemento | Detalhes |
 |----------|----------|
 | Logo | Retangular, max 200x80px |
-| Botão "Alterar Logo" | Upload |
+| Botão "Alterar Logo" | Upload (armazenado no Supabase Storage, bucket privado por conta) |
 | Botão "Remover" | Remove logo |
 | Formatos | JPG, PNG, SVG |
 | Tamanho máximo | 1MB |

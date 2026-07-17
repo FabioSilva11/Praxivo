@@ -161,7 +161,7 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 ### Etapas
 
 #### Etapa 1: Perfil
-- Foto de perfil (upload ou avatar padrão)
+- Foto de perfil (upload via Supabase Storage ou avatar padrão)
 - Nome (já preenchido)
 - Empresa/Organização (opcional)
 - Cargo (opcional)
@@ -215,11 +215,16 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 
 ## Segurança
 
+Autenticação implementada via **Supabase Auth** (não é um sistema de JWT/bcrypt customizado do zero — o Supabase gerencia essa camada).
+
 | Medida | Implementação |
 |--------|---------------|
-| Senhas | Hash com bcrypt (salt rounds: 12) |
-| Tokens JWT | Expiração de 7 dias (access), 30 dias (refresh) |
-| Rate limiting | Máximo 5 tentativas de login em 15 minutos |
-| CSRF | Token CSRF em formulários |
+| Senhas | Hash gerenciado internamente pelo Supabase Auth (bcrypt) |
+| Sessão | Access token (JWT) + refresh token emitidos pelo Supabase Auth; renovação automática via SDK |
+| Rate limiting | Limites nativos do Supabase Auth em envio de email/tentativas de login, reforçados por regra adicional da aplicação (5 tentativas em 15 minutos por conta) |
+| CSRF | Client SDK do Supabase usa Bearer token (não cookie de sessão tradicional), reduzindo superfície de CSRF |
 | HTTPS | Obrigatório em produção |
-| Validade de email | Token de verificação com expiração de 24h |
+| Verificação de email | Fluxo nativo do Supabase Auth (`signUp` com confirmação por email); link expira em 24h |
+| Recuperação de senha | Fluxo nativo do Supabase Auth (`resetPasswordForEmail`) |
+| 2FA/MFA | TOTP nativo do Supabase Auth (`auth.mfa`) |
+| Isolamento de dados | Row Level Security (RLS) no Postgres usando `auth.uid()` — ver `14-arquitetura.md` e `SECURITY.md` |

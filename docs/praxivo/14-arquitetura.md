@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Documentação da arquitetura técnica do Praxivo, incluindo multi-tenancy, isolamento de dados, limites de planos e tratamento de falhas de pagamento.
+Documentação da arquitetura técnica do Praxivo, incluindo multi-tenancy, isolamento de dados, limites de planos e tratamento de falhas de pagamento. O backend é construído sobre **Supabase** (Postgres, Auth, Storage e Realtime).
 
 ---
 
@@ -69,15 +69,17 @@ SELECT * FROM medications;
 
 ### Interceptor de Dados
 
+> Com Supabase, o **RLS já impede** que uma query retorne dados de outro usuário mesmo que o `userId` não seja passado explicitamente — é a defesa primária. O middleware abaixo é uma camada **adicional** de defesa em profundidade (fail-safe caso alguma query use a `service_role` key, que ignora RLS).
+
 Todas as rotas da API passam por um middleware que:
 
-1. Extrai `userId` do token JWT
+1. Extrai `userId` do token JWT (emitido pelo Supabase Auth)
 2. Injeta `userId` em todas as queries
 3. Valida que o usuário está autenticado
 4. Verifica se o usuário tem acesso ao recurso
 
 ```typescript
-// Middleware de isolamento
+// Middleware de isolamento (camada extra além do RLS)
 app.use('/api/*', (req, res, next) => {
   const userId = req.user.id;
   
@@ -357,7 +359,7 @@ Frontend
     ▼
 API Gateway
     │
-    ├── Validação de autenticação (JWT)
+    ├── Validação de autenticação (JWT emitido pelo Supabase Auth)
     ├── Validação de autorização (permissões)
     │
     ▼
@@ -371,7 +373,7 @@ Database
     │
     ├── Foreign keys com userId
     ├── Índices em userId
-    ├── Row Level Security (RLS)
+    ├── Row Level Security (RLS) ← defesa primária, aplicada pelo Postgres/Supabase
     │
     ▼
 Resposta
@@ -382,22 +384,32 @@ Resposta
 
 ### Row Level Security (RLS)
 
+O RLS é aplicado no Postgres do **Supabase**, usando `auth.uid()` — a função nativa que retorna o ID do usuário autenticado a partir do JWT da requisição. Isso faz do RLS a **linha de defesa primária** contra vazamento de dados entre contas, não apenas uma camada extra.
+
 ```sql
--- Habilitar RLS em todas as tabelas
+-- Habilitar RLS em todas as tabelas com dado de usuário
 ALTER TABLE medications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE alerts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 
--- Políticas de acesso
-CREATE POLICY user_isolation ON medications
-  USING (user_id = current_user_id());
+-- Políticas de leitura, criação, atualização e exclusão
+CREATE POLICY user_isolation_select ON medications
+  FOR SELECT USING (user_id = auth.uid());
 
-CREATE POLICY user_isolation ON alerts
-  USING (user_id = current_user_id());
+CREATE POLICY user_isolation_insert ON medications
+  FOR INSERT WITH CHECK (user_id = auth.uid());
 
-CREATE POLICY user_isolation ON history
-  USING (user_id = current_user_id());
+CREATE POLICY user_isolation_update ON medications
+  FOR UPDATE USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY user_isolation_delete ON medications
+  FOR DELETE USING (user_id = auth.uid());
+
+-- Mesma política replicada para alerts, history e notifications
 ```
+
+> As mesmas quatro políticas (SELECT/INSERT/UPDATE/DELETE) devem ser criadas para `alerts`, `history` e `notifications` — omitidas acima só por brevidade.
 
 ### Validação de Propriedade
 
@@ -446,14 +458,17 @@ src/
 │   ├── medications/      # Componentes de medicamentos
 │   └── layout/           # Sidebar, Header, etc.
 ├── lib/                   # Utilitários
-│   ├── db.ts            # Conexão com banco
-│   ├── stripe.ts        # Configuração Stripe
-│   └── auth.ts          # Autenticação
+│   ├── supabase/
+│   │   ├── client.ts     # Cliente Supabase (browser)
+│   │   ├── server.ts     # Cliente Supabase (server components/route handlers)
+│   │   └── middleware.ts # Refresh de sessão do Supabase Auth
+│   └── stripe.ts         # Configuração Stripe
 ├── hooks/                 # Custom hooks
+│   └── useRealtimeSubscription.ts  # Hook para subscriptions do Supabase Realtime
 ├── types/                 # TypeScript types
-└── middleware/            # Middleware
-    ├── auth.ts           # Autenticação
-    ├── isolation.ts      # Isolamento de dados
+│   └── database.types.ts # Tipos gerados a partir do schema do Supabase
+└── middleware/            # Middleware de aplicação (camada extra além do RLS)
+    ├── isolation.ts      # Validação adicional de isolamento
     └── rateLimit.ts      # Rate limiting
 ```
 
@@ -546,9 +561,10 @@ src/
 
 | Conceito | Implementação |
 |----------|---------------|
-| Multi-tenancy | Filtro por userId em todas as queries |
-| Isolamento | RLS + middleware + validação de propriedade |
+| Backend-as-a-Service | Supabase (Postgres + Auth + Storage + Realtime) |
+| Multi-tenancy | RLS no Postgres (`auth.uid()`) + filtro por userId nas queries |
+| Isolamento | RLS (defesa primária) + middleware (defesa extra) + validação de propriedade |
 | Limites de plano | Verificação antes de cada operação |
 | Falha de pagamento | Restrição progressiva (não exclusão) |
 | Reactivação | Dados mantidos, acesso restaurado |
-| Segurança | JWT + validação em todas as camadas |
+| Segurança | Supabase Auth (JWT) + RLS + validação em todas as camadas |

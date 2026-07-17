@@ -213,7 +213,7 @@ A Dashboard é a página principal pós-login. Deve fornecer uma visão completa
   - Ilustração contextual
 
 ### Atualização
-- Dados atualizam automaticamente (polling a cada 30s ou WebSocket)
+- Dados atualizam automaticamente via **Supabase Realtime** (subscriptions em `medications` e `alerts`, sem polling)
 - Animação de transição nos valores ao atualizar
 - Toast sutil quando há novos alertas
 

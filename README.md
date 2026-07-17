@@ -92,8 +92,12 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 - **Frontend:** A definir (sugestão: React/Next.js)
 - **Estilo:** Inspirado em Linear, Notion, Vercel, Stripe Dashboard
 - **Pagamentos:** Stripe (Checkout, Customer Portal, Webhooks)
-- **Banco de Dados:** A definir
-- **Hospedagem:** A definir
+- **Backend-as-a-Service:** [Supabase](https://supabase.com)
+  - **Banco de Dados:** PostgreSQL (via Supabase), isolamento multi-tenant via Row Level Security (RLS)
+  - **Autenticação:** Supabase Auth (email/senha + verificação de email + MFA/TOTP nativos)
+  - **Storage:** Supabase Storage (foto de perfil, logo da empresa)
+  - **Realtime:** Supabase Realtime (atualizações ao vivo do dashboard, alertas e notificações via WebSocket)
+- **Hospedagem:** A definir (frontend/API — o banco/auth/storage já ficam no Supabase)
 
 ---
 
@@ -126,17 +130,17 @@ Praxivo/
 ## Multi-Tenancy
 
 - Cada usuário visualiza apenas seus próprios dados
-- Isolamento completo por `userId` em todas as queries
-- Row Level Security (RLS) no banco de dados
+- Isolamento completo por `userId` (`auth.uid()`) em todas as queries
+- Row Level Security (RLS) nativo do Postgres, via Supabase
 - Validação de propriedade em todas as operações
 
 ---
 
 ## Segurança
 
-- Senhas hasheadas com bcrypt
-- Autenticação via JWT
-- Autenticação de dois fatores (2FA)
+- Autenticação via Supabase Auth (hash de senha e emissão de JWT gerenciados pelo Supabase)
+- Autenticação de dois fatores (2FA/TOTP) via Supabase Auth
+- Isolamento de dados via Row Level Security (RLS) no Postgres
 - Cartões processados pelo Stripe (nunca pelo backend)
 - PCI DSS Compliance via Stripe Elements
 - Webhook verification com assinatura

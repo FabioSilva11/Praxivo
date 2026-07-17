@@ -166,7 +166,7 @@ Central de notificações do sistema, acessível de qualquer página.
 
 **Título:** "📋 Medicamento atualizado"
 
-**Descrição:** "Paracetamol 500mg foi editado por João Silva. Quantidade alterada de 10 para 25."
+**Descrição:** "Paracetamol 500mg foi editado. Quantidade alterada de 10 para 25."
 
 **Ações:**
 | Botão | Ação |

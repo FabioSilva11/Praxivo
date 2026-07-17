@@ -49,6 +49,8 @@ A Dashboard é a página principal pós-login. Deve fornecer uma visão completa
 | DollarSign | Financeiro | `/financeiro` | — |
 | Settings | Configurações | `/configuracoes` | — |
 
+> **Nota:** `/notificacoes` (ver `11-notificacoes.md`) não é um item da sidebar por padrão — é acessada pelo ícone de sino no header ("Ver todas as notificações"). Ainda assim, é uma rota válida da aplicação (ver "Resumo das Rotas" abaixo).
+
 ### Comportamento
 - **Expandida (desktop):** Ícone + Label, largura 240px
 - **Recolhida (desktop):** Apenas ícones, largura 64px
@@ -91,6 +93,8 @@ A Dashboard é a página principal pós-login. Deve fornecer uma visão completa
 | Próximos do Vencimento | 34 | Próximos 30 dias | Amarelo | Clock | Mini bar chart (próximos 7 dias) |
 | Vencidos | 8 | Requer ação | Vermelho | AlertTriangle | Mini line chart (últimos 6 meses) |
 | Economia Estimada | R$ 4.850 | vs. mês anterior | Verde | TrendingUp | Mini line chart (últimos 6 meses) |
+
+> **Nota sobre os valores:** os números acima são apenas ilustrativos e representam um **snapshot do estado atual** (ex.: "Vencidos" = vencidos agora mesmo). Já os totais equivalentes em `07-relatorios.md` e `10-area-financeira.md` representam o **acumulado do período filtrado** (padrão: últimos 30 dias), por isso os valores de exemplo não coincidem entre as páginas — isso é esperado, não um erro de digitação.
 
 ### Estilo dos Cards
 
@@ -231,3 +235,4 @@ A Dashboard é a página principal pós-login. Deve fornecer uma visão completa
 | `/historico` | Log de ações |
 | `/financeiro` | Métricas financeiras |
 | `/configuracoes` | Configurações do usuário |
+| `/notificacoes` | Central de notificações (acesso via sino no header) |

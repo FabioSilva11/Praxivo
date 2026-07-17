@@ -432,7 +432,8 @@ src/
 │   │   ├── relatorios/
 │   │   ├── historico/
 │   │   ├── financeiro/
-│   │   └── configuracoes/
+│   │   ├── configuracoes/
+│   │   └── notificacoes/
 │   └── api/               # API routes
 │       ├── medications/
 │       ├── alerts/

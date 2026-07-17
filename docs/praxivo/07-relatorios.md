@@ -94,6 +94,8 @@ Página moderna para visualizar e gerar relatórios detalhados sobre o estoque d
 | Total Lixo | 12 | Cinza | Trash |
 | Economia Estimada | R$ 12.450 | Verde | TrendingUp |
 
+> **Nota sobre os valores:** estes cards mostram o **total acumulado no período filtrado** (ver seção "Filtros › Período" acima), diferente do snapshot atual mostrado nos cards do Dashboard (`04-dashboard.md`). Por isso os números de exemplo não são iguais entre as duas páginas.
+
 ### Estilo dos Cards
 - Fundo: Branco (light) / Cinza 800 (dark)
 - Valor: H2, Bold

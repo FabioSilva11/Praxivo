@@ -44,20 +44,23 @@ Página exclusiva para visualizar e gerenciar medicamentos com base no status de
 
 ## Tabs de Filtro
 
+As tabs usam o **mesmo critério de Prioridade** definido na seção "Prioridade dos Alertas" abaixo — não há dois sistemas de classificação, apenas um, reaproveitado no filtro e no badge do card.
+
 | Tab | Badge | Filtro Aplicado |
 |-----|-------|-----------------|
 | Todos | Contagem total | Sem filtro |
-| Vencidos | Contagem (vermelho) | Validade < hoje |
-| Vencendo em 30 dias | Contagem (amarelo) | Validade entre hoje e 30 dias |
-| Vencendo em 15 dias | Contagem (amarelo escuro) | Validade entre hoje e 15 dias |
-| Vencendo em 7 dias | Contagem (laranja) | Validade entre hoje e 7 dias |
-| Vencendo em 1 dia | Contagem (vermelho) | Validade amanhã |
+| Crítico | Contagem (vermelho) | Vencido ou vence hoje |
+| Alta | Contagem (vermelho claro) | Vence em 1-3 dias |
+| Média | Contagem (laranja) | Vence em 4-7 dias |
+| Baixa | Contagem (amarelo) | Vence em 8-30 dias |
 
 ### Comportamento
 - Tab ativa: fundo Azul, texto Branco
 - Tabs inativas: fundo transparente, texto Cinza
-- Badge: fundo baseado na cor do status
+- Badge: fundo baseado na cor da prioridade (ver tabela "Prioridade dos Alertas")
 - Clique na tab filtra a lista
+
+> **Nota sobre os marcos de 30/15/7/1 dia:** esses marcos (citados no README e em `09-configuracoes.md`) continuam existindo, mas servem a um propósito diferente — são os **gatilhos de disparo** de notificação (quando o sistema envia um push/email), não os filtros desta página. Um medicamento pode, por exemplo, disparar uma notificação ao atingir o marco de "15 dias" e, ao mesmo tempo, aparecer nesta página na tab "Baixa" (8-30 dias) até que sua prioridade mude.
 
 ---
 

@@ -36,7 +36,7 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 | Elemento | Posição | Detalhes |
 |----------|---------|----------|
 | Título | Esquerda | "Histórico de Atividades" (H2) |
-| Botão "Limpar Histórico" | Direita | Ghost (apenas admin) |
+| Botão "Limpar Histórico" | Direita | Ghost (disponível para o dono da conta) |
 
 ---
 
@@ -71,19 +71,21 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 │ 🟢  Medicamento cadastrado                      │
 │     "Paracetamol 500mg foi cadastrado no        │
 │      sistema com validade até 12/2025"          │
-│     📅 15/07/2026 às 14:30  👤 João Silva      │
+│     📅 15/07/2026 às 14:30                      │
 ├─────────────────────────────────────────────────┤
 │ 🔵  Medicamento editado                         │
 │     "Ibuprofeno 600mg - quantidade atualizada   │
 │      de 10 para 25 unidades"                    │
-│     📅 15/07/2026 às 10:15  👤 Maria Santos    │
+│     📅 15/07/2026 às 10:15                      │
 ├─────────────────────────────────────────────────┤
 │ 🔴  Medicamento descartado                      │
 │     "Amoxicilina 500mg descartado - motivo:     │
 │      vencido há 30 dias"                        │
-│     📅 14/07/2026 às 16:45  👤 João Silva      │
+│     📅 14/07/2026 às 16:45                      │
 └─────────────────────────────────────────────────┘
 ```
+
+> **Nota:** cada conta do Praxivo é individual (um usuário por conta — ver "Multi-Tenancy" no README), por isso o item da timeline não precisa exibir nome de usuário distinto por ação. O campo "Usuário" na visão expandida (abaixo) apenas confirma que a ação foi feita pelo dono da conta autenticada.
 
 ### Cada Item da Timeline
 
@@ -126,7 +128,7 @@ Página para registrar e visualizar todas as ações realizadas no sistema, com 
 | ID da Atividade | #ACT-001234 |
 | Ação | Cadastrar |
 | Medicamento | Paracetamol 500mg |
-| Usuário | João Silva |
+| Usuário | Dono da conta autenticada |
 | Data/Hora | 15/07/2026 14:30:22 |
 | IP | 192.168.1.100 |
 | Detalhes | Dados antes/depois (para edições) |

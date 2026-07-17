@@ -34,8 +34,11 @@ O design do Praxivo é inspirado em:
 | **Cinza 100** | Fundo de cards | `#F3F4F6` |
 | **Cinza 200** | Bordas leves | `#E5E7EB` |
 | **Cinza 300** | Bordas médias | `#D1D5DB` |
+| **Cinza 400** | Placeholder, ícones desabilitados | `#9CA3AF` |
 | **Cinza 500** | Texto secundário | `#6B7280` |
+| **Cinza 600** | Texto secundário forte, ícones | `#4B5563` |
 | **Cinza 700** | Texto primário | `#374151` |
+| **Cinza 800** | Fundo de cards/tabelas quando referenciado em dark mode | `#1F2937` |
 | **Cinza 900** | Texto forte/títulos | `#111827` |
 | **Branco** | Fundo de cards, modais | `#FFFFFF` |
 

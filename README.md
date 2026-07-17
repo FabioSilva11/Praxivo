@@ -44,8 +44,8 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 - Seleção múltipla para ações em lote
 
 ### Alertas
-- Notificações por vencimento (30, 15, 7, 1 dia)
-- Prioridades (Crítico, Alta, Média, Baixa)
+- Gatilhos de notificação por vencimento (30, 15, 7, 1 dia)
+- Classificação por prioridade na página de Alertas (Crítico, Alta, Média, Baixa)
 - Ações rápidas diretamente do alerta
 
 ### Relatórios
@@ -74,6 +74,7 @@ Nunca mais perca medicamentos por vencimento. Controle todo o seu estoque em um 
 - Notificações
 - Segurança (Senha, 2FA, Sessões)
 - Pagamentos
+- Conexões (Google, Microsoft, Slack, Stripe, Webhook)
 
 ---
 

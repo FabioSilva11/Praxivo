@@ -12,7 +12,7 @@
 |--------|----------------|
 | Método de login | Email + senha (sem login social/OAuth) |
 | Hash de senha | bcrypt, salt rounds: 12 |
-| Senha mínima aceita | 6 caracteres (ver nota abaixo) |
+| Senha mínima aceita | 8 caracteres |
 | Tokens de sessão | JWT — access token expira em 7 dias, refresh token em 30 dias |
 | Verificação de email | Obrigatória antes de acessar o dashboard; token expira em 24h |
 | Recuperação de senha | Link único por email, de uso único |
@@ -20,7 +20,7 @@
 | CSRF | Token CSRF em todos os formulários |
 | HTTPS | Obrigatório em produção (sem exceções) |
 
-> ⚠️ **Ponto de atenção aberto:** a senha mínima aceita é de 6 caracteres, mas o próprio indicador de força da UI (`03-autenticacao.md`) classifica "6+ caracteres" como força **Média**, não **Forte**. Ou seja, o sistema permite cadastro com uma senha que ele mesmo não considera forte. Recomenda-se decidir, antes da implementação, se o mínimo aceito deve subir (ex: 8 caracteres) ou se isso é aceitável para o produto.
+O indicador de força de senha (Média/Forte) reforça boas práticas acima do mínimo, mas o mínimo aceito em si já é 8 caracteres — não existe mais a inconsistência de aceitar como válida uma senha que o próprio indicador classificaria como fraca.
 
 ### Autenticação de Dois Fatores (2FA)
 - Opcional, ativável em Configurações › Segurança
@@ -124,7 +124,6 @@ Como o projeto está em fase de especificação, os seguintes pontos de seguran�
 - [ ] Banco de dados e hospedagem (README ainda marca como "A definir") — isso afeta diretamente como RLS será implementado na prática
 - [ ] Política de rotação de segredos (`STRIPE_SECRET_KEY`, `JWT_SECRET`, etc.)
 - [ ] Processo formal de resposta a incidentes de segurança
-- [ ] Se o mínimo de senha deve subir de 6 para 8+ caracteres (ver nota na seção 1)
 - [ ] Política de retenção de logs de segurança (por quanto tempo ficam armazenados)
 
 ---

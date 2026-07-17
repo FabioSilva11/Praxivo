@@ -41,7 +41,7 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 |-------|-------|------------------|
 | Email | Formato válido | "Email inválido" |
 | Email | Obrigatório | "Email é obrigatório" |
-| Senha | Mínimo 6 caracteres | "Senha deve ter no mínimo 6 caracteres" |
+| Senha | Mínimo 8 caracteres | "Senha deve ter no mínimo 8 caracteres" |
 | Senha | Obrigatória | "Senha é obrigatória" |
 | Credenciais | Corretas | "Email ou senha incorretos" |
 
@@ -89,9 +89,10 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 
 | Nível | Cor | Critérios |
 |-------|-----|-----------|
-| Fraca | Vermelho | Abaixo de 6 caracteres |
-| Média | Amarelo | 6+ caracteres |
-| Forte | Verde | 8+ caracteres, maiúscula, número, especial |
+| Média | Amarelo | 8 caracteres (mínimo aceito), sem variedade de tipos |
+| Forte | Verde | 8+ caracteres, com maiúscula, número e caractere especial |
+
+> Não existe nível "Fraca" selecionável: senhas abaixo de 8 caracteres são bloqueadas na validação (ver tabela abaixo) antes mesmo de chegar ao indicador de força. O indicador serve para incentivar senhas fortes, não para permitir senhas fracas.
 
 ### Validações
 
@@ -99,7 +100,7 @@ Sistema de autenticação completo com Login, Cadastro, Recuperação de Senha e
 |-------|-------|----------|
 | Nome | Mínimo 2 caracteres | "Nome deve ter no mínimo 2 caracteres" |
 | Email | Formato válido e único | "Email já cadastrado" |
-| Senha | Mínimo 6 caracteres | "Senha deve ter no mínimo 6 caracteres" |
+| Senha | Mínimo 8 caracteres | "Senha deve ter no mínimo 8 caracteres" |
 | Confirmar senha | Igual à senha | "As senhas não coincidem" |
 | Termos | Marcado | "Você precisa aceitar os termos" |
 

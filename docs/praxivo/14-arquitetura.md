@@ -67,32 +67,23 @@ SELECT * FROM medications WHERE user_id = 'usr_123';
 SELECT * FROM medications;
 ```
 
-### Interceptor de Dados
+### Isolamento via RLS (sem middleware customizado)
 
-> Com Supabase, o **RLS já impede** que uma query retorne dados de outro usuário mesmo que o `userId` não seja passado explicitamente — é a defesa primária. O middleware abaixo é uma camada **adicional** de defesa em profundidade (fail-safe caso alguma query use a `service_role` key, que ignora RLS).
+O isolamento de dados é garantido **inteiramente pelo RLS do Postgres/Supabase** (ver seção "Row Level Security (RLS)" abaixo) — não existe um middleware de aplicação que extraia `userId` e injete manualmente em cada query.
 
-Todas as rotas da API passam por um middleware que:
+Na prática:
+1. O frontend chama o Supabase diretamente (client SDK) ou via uma rota de API que usa a **chave anônima/autenticada** do usuário (nunca a `service_role`)
+2. O Supabase valida o JWT da sessão e resolve `auth.uid()` automaticamente
+3. As políticas de RLS filtram os dados por `user_id = auth.uid()` — o desenvolvedor não escreve `WHERE user_id = ...` manualmente, a política faz isso por trás da consulta
+4. Se uma rota de backend precisar da `service_role` key por algum motivo pontual (ex: um job administrativo), ela deve reaplicar o filtro por `user_id` manualmente nesse caso específico, já que a `service_role` ignora RLS por padrão
 
-1. Extrai `userId` do token JWT (emitido pelo Supabase Auth)
-2. Injeta `userId` em todas as queries
-3. Valida que o usuário está autenticado
-4. Verifica se o usuário tem acesso ao recurso
-
-```typescript
-// Middleware de isolamento (camada extra além do RLS)
-app.use('/api/*', (req, res, next) => {
-  const userId = req.user.id;
-  
-  // Injeta userId em todas as queries
-  req.dbQuery = req.dbQuery.where('user_id', userId);
-  
-  next();
-});
-```
+> Não usar a `service_role` key em rotas normais da aplicação é a regra mais importante desta seção — é o único jeito de "furar" o isolamento por engano.
 
 ---
 
 ## Isolamento por Recurso
+
+> As validações abaixo (`WHERE user_id = ?`) representam o que a política de RLS aplica automaticamente em cada tabela — não é código que o desenvolvedor escreve manualmente em cada query.
 
 ### Medicamentos
 
@@ -366,25 +357,24 @@ API Gateway
 Service Layer
     │
     ├── Validação de negócio (limites, regras)
-    ├── Injeção automática de userId
     │
     ▼
 Database
     │
     ├── Foreign keys com userId
     ├── Índices em userId
-    ├── Row Level Security (RLS) ← defesa primária, aplicada pelo Postgres/Supabase
+    ├── Row Level Security (RLS) ← único mecanismo de isolamento, aplicado pelo Postgres/Supabase
     │
     ▼
 Resposta
     │
     ├── Filtragem de dados sensíveis
-    └── Validação de que dados pertencem ao usuário
+    └── Resposta já vem filtrada pelo RLS — não sobra dado de outro usuário para validar
 ```
 
 ### Row Level Security (RLS)
 
-O RLS é aplicado no Postgres do **Supabase**, usando `auth.uid()` — a função nativa que retorna o ID do usuário autenticado a partir do JWT da requisição. Isso faz do RLS a **linha de defesa primária** contra vazamento de dados entre contas, não apenas uma camada extra.
+O RLS é aplicado no Postgres do **Supabase**, usando `auth.uid()` — a função nativa que retorna o ID do usuário autenticado a partir do JWT da requisição. É o **único mecanismo de isolamento** de dados do sistema: não existe middleware de aplicação nem função de validação de propriedade escrita à mão — a política de RLS já garante que uma consulta só enxerga (e só consegue escrever em) linhas do próprio usuário.
 
 ```sql
 -- Habilitar RLS em todas as tabelas com dado de usuário
@@ -411,22 +401,22 @@ CREATE POLICY user_isolation_delete ON medications
 
 > As mesmas quatro políticas (SELECT/INSERT/UPDATE/DELETE) devem ser criadas para `alerts`, `history` e `notifications` — omitidas acima só por brevidade.
 
-### Validação de Propriedade
+### "Não Encontrado" em vez de "Acesso Negado"
+
+Como o RLS filtra as linhas antes mesmo delas chegarem à aplicação, tentar ler/atualizar/excluir um recurso de outro usuário simplesmente **não retorna nenhuma linha** — não é preciso escrever uma função de validação de propriedade separada:
 
 ```typescript
-async function validateOwnership(userId: string, resourceType: string, resourceId: string) {
-  const resource = await db[resourceType].findFirst({
-    where: {
-      id: resourceId,
-      user_id: userId
-    }
-  });
-  
-  if (!resource) {
-    throw new NotFoundError('Recurso não encontrado');
-  }
-  
-  return resource;
+const { data, error } = await supabase
+  .from('medications')
+  .select('*')
+  .eq('id', resourceId)
+  .single();
+
+// Se o recurso não existir OU pertencer a outro usuário, `data` vem vazio/null.
+// Nos dois casos a resposta é a mesma: "não encontrado" — nunca "acesso negado",
+// o que evita vazar a existência do recurso para quem não é dono dele.
+if (!data) {
+  throw new NotFoundError('Recurso não encontrado');
 }
 ```
 
@@ -467,9 +457,8 @@ src/
 │   └── useRealtimeSubscription.ts  # Hook para subscriptions do Supabase Realtime
 ├── types/                 # TypeScript types
 │   └── database.types.ts # Tipos gerados a partir do schema do Supabase
-└── middleware/            # Middleware de aplicação (camada extra além do RLS)
-    ├── isolation.ts      # Validação adicional de isolamento
-    └── rateLimit.ts      # Rate limiting
+└── middleware/            # Middleware de aplicação (rate limiting apenas —
+    └── rateLimit.ts       # isolamento de dados é 100% responsabilidade do RLS, não daqui)
 ```
 
 ---
@@ -480,37 +469,36 @@ src/
 1. Usuário faz ação no frontend
     │
     ▼
-2. Frontend envia requisição com JWT
+2. Frontend envia requisição com JWT (sessão do Supabase Auth)
     │
     ▼
-3. Middleware valida JWT
+3. Supabase valida o JWT e resolve auth.uid()
     │
     ├── Token inválido → 401 Unauthorized
     │
     ▼
-4. Middleware extrai userId
-    │
-    ▼
-5. Middleware verifica assinatura ativa
+4. Aplicação verifica status da assinatura (regra de negócio, não é RLS)
     │
     ├── Assinatura inativa → 403 Forbidden (com status de bloqueio)
     │
     ▼
-6. Middleware verifica limite de plano
+5. Aplicação verifica limite de plano (regra de negócio, não é RLS)
     │
     ├── Limite atingido → 403 Forbidden (com mensagem de upgrade)
     │
     ▼
-7. Service processa com userId
+6. Query executada normalmente (sem WHERE user_id manual)
     │
-    ├── Query: WHERE user_id = ?
-    │
-    ▼
-8. Retorna apenas dados do usuário
+    ├── RLS filtra automaticamente por auth.uid() nos bastidores
     │
     ▼
-9. Frontend exibe dados
+7. Retorna apenas dados do usuário (garantido pelo RLS, não por lógica da aplicação)
+    │
+    ▼
+8. Frontend exibe dados
 ```
+
+> Os passos 4 e 5 são as únicas verificações que continuam sendo responsabilidade da aplicação — são regras de negócio (assinatura, limite de plano) que o RLS não resolve, já que RLS só decide *quais linhas* uma query pode ver, não *quantos registros* um plano permite ter.
 
 ---
 
@@ -563,7 +551,7 @@ src/
 |----------|---------------|
 | Backend-as-a-Service | Supabase (Postgres + Auth + Storage + Realtime) |
 | Multi-tenancy | RLS no Postgres (`auth.uid()`) + filtro por userId nas queries |
-| Isolamento | RLS (defesa primária) + middleware (defesa extra) + validação de propriedade |
+| Isolamento | RLS (único mecanismo — sem middleware customizado nem validação de propriedade manual) |
 | Limites de plano | Verificação antes de cada operação |
 | Falha de pagamento | Restrição progressiva (não exclusão) |
 | Reactivação | Dados mantidos, acesso restaurado |

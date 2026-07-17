@@ -41,17 +41,18 @@ Princípio central do sistema: **um usuário nunca pode ver ou modificar dados d
 
 | Camada | Como o isolamento é garantido |
 |--------|-------------------------------|
-| Banco de dados (defesa primária) | Row Level Security (RLS) do Postgres, habilitada em todas as tabelas com dado de usuário (`medications`, `alerts`, `history`, `notifications`) — políticas usam `auth.uid()`, a função nativa do Supabase que identifica o usuário autenticado |
-| Query | **Toda** query passa por `WHERE user_id = auth.uid()` (via política RLS) — nunca há um `SELECT * FROM medications` sem filtro |
-| Middleware da API (defesa extra) | Extrai `userId` do JWT e injeta automaticamente em todas as queries antes de chegar ao service layer — camada adicional, útil como fail-safe caso alguma chamada use a `service_role` key (que ignora RLS) |
-| Validação de propriedade | Antes de ler/atualizar/excluir um recurso, o backend confirma que `resource.user_id === userId` da sessão — se não bater, retorna "não encontrado" (nunca "acesso negado", para não vazar a existência do recurso) |
+| Banco de dados (único mecanismo) | Row Level Security (RLS) do Postgres, habilitada em todas as tabelas com dado de usuário (`medications`, `alerts`, `history`, `notifications`) — políticas usam `auth.uid()`, a função nativa do Supabase que identifica o usuário autenticado |
+| Query | **Toda** query é automaticamente filtrada por `user_id = auth.uid()` via política de RLS — não há `WHERE` manual escrito pela aplicação, nem `SELECT * FROM medications` sem filtro possível |
+| "Não encontrado" vs "Acesso negado" | Como o RLS filtra as linhas antes de chegarem à aplicação, tentar acessar um recurso de outro usuário simplesmente não retorna nenhuma linha — a resposta natural já é "não encontrado", sem precisar de uma função de validação de propriedade escrita à mão |
 
-Fluxo de validação em camadas (Frontend → API Gateway → Service Layer → Database → Resposta):
+> **Não existe middleware de aplicação customizado para isolamento.** A única exceção que exige atenção manual é o uso da `service_role` key do Supabase (que ignora RLS) — ela deve ser evitada em rotas normais e, se usada em alguma rotina administrativa pontual, precisa reaplicar o filtro por `user_id` manualmente nesse caso específico.
+
+Fluxo de validação em camadas (Frontend → Supabase Auth → Database → Resposta):
 1. Frontend valida formato (UX, não é segurança de verdade)
-2. API Gateway valida JWT (emitido pelo Supabase Auth) e autorização
-3. Service Layer aplica regras de negócio + injeta `userId` (defesa extra)
-4. Database aplica RLS como **defesa primária**
-5. Resposta é filtrada antes de sair (nunca retornar campos internos como hash de senha)
+2. Supabase Auth valida o JWT e resolve `auth.uid()`
+3. Aplicação verifica apenas regras de negócio que o RLS não cobre (limite de plano, status de assinatura — ver `14-arquitetura.md`)
+4. Database aplica RLS como único mecanismo de isolamento
+5. Resposta já vem filtrada — nunca contém dado de outro usuário nem campos internos como hash de senha
 
 > Ver `14-arquitetura.md` para os exemplos de SQL das políticas de RLS.
 
